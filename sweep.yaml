@@ -1,0 +1,32 @@
+project: grokking
+program: grokking/cli.py
+method: grid
+
+metric:
+  name: validation/loss
+  goal: minimize
+
+parameters:
+  operation:
+    values: ["x/y"]
+  training_fraction:
+    values: [0.5]
+  num_layers:
+    value: 2
+  dim_model:
+    value: 128
+  num_heads:
+    value: 4
+  prime:
+    value: 97
+  batch_size:
+    value: 512
+  learning_rate:
+    value: 1e-3
+  weight_decay:
+    value: 0.1
+  num_steps:
+    value: 100000
+  device:
+    value: auto
+  
