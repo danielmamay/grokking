@@ -1,8 +1,8 @@
 # Grokking
 
-### References
+An implementation of the OpenAI 'Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets' paper in PyTorch.
 
-A re-implementation of the OpenAI grokking paper.
+### References
 
 Code:
 
