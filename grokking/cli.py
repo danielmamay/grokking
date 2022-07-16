@@ -1,11 +1,11 @@
 from argparse import ArgumentParser
 
-from data import OPERATIONS
+from data import ALL_OPERATIONS
 from training import main
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--operation", type=str, choices=OPERATIONS.keys(), default="x+y")
+    parser.add_argument("--operation", type=str, choices=ALL_OPERATIONS.keys(), default="x/y")
     parser.add_argument("--training_fraction", type=float, default=0.5)
     parser.add_argument("--prime", type=int, default=97)
     parser.add_argument("--num_layers", type=int, default=2)

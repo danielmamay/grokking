@@ -1,36 +1,43 @@
 from math import ceil
 import torch
 
-MODULO_OPERATIONS = {
-    "x+y": lambda x, y: x + y,
-    "x-y": lambda x, y: x - y,
-    "x^2+y^2": lambda x, y: x**2 + y**2,
-    "x^2+xy+y^2": lambda x, y: x**2 + x*y + y**2,
-    "x^2+xy+y^2+x": lambda x, y: x**2 + x*y + y**2 + x,
-    "x^3+xy": lambda x, y: x**3 + x*y,
-    "x^3+xy^2+x": lambda x, y: x**3 + x*y**2 + y
+DIVISION_MODULO_OPERATIONS = {
+    "x/y": lambda x, y, p: (x*y % p, y, x),
+    "(x//y)if(y%2==1)else(x-y)": lambda x, y, _: torch.where(y % 2 == 1, x // y, x - y)
 }
 
-OPERATIONS = {
-    **MODULO_OPERATIONS,
+ALL_MODULO_OPERATIONS = {
+    "x+y": lambda x, y, _: (x, y, x + y),
+    "x-y": lambda x, y, _: (x, y, x - y),
+    **DIVISION_MODULO_OPERATIONS,
+    "x^2+y^2": lambda x, y, _: (x, y, x**2 + y**2),
+    "x^2+xy+y^2": lambda x, y, _: (x, y, x**2 + x*y + y**2),
+    "x^2+xy+y^2+x": lambda x, y, _: (x, y, x**2 + x*y + y**2 + x),
+    "x^3+xy": lambda x, y, _: (x, y, x**3 + x*y),
+    "x^3+xy^2+x": lambda x, y, _: (x, y, x**3 + x*y**2 + y)
 }
 
-def operation_mod_p_data(operation: str, prime: int, eq_token: int, op_token: int):
+ALL_OPERATIONS = {
+    **ALL_MODULO_OPERATIONS,
+}
+
+def operation_mod_p_data(operation: str, p: int, eq_token: int, op_token: int):
     """
-    x◦y (mod p) for 0 <= x, y < p
+    x◦y (mod p) for 0 <= x < p, 1 <= y < p if operation in DIVISION_MODULO_OPERATIONS
+    x◦y (mod p) for 0 <= x, y < p otherwise
     """
-    x = torch.arange(prime)
-    y = torch.arange(prime)
+    x = torch.arange(0, p)
+    y = torch.arange(0 if not operation in DIVISION_MODULO_OPERATIONS else 1, p)
     x, y = torch.cartesian_prod(x, y).T
 
     eq = torch.ones_like(x) * eq_token
     op = torch.ones_like(x) * op_token
 
-    if operation in MODULO_OPERATIONS:
-        result = OPERATIONS[operation](x, y).remainder(prime)
+    x, y, z = ALL_OPERATIONS[operation](x, y, p)
+    results = z.remainder(p)
 
     inputs = torch.stack([x, op, y, eq], dim=1)
-    labels = result
+    labels = results
 
     return inputs, labels
 

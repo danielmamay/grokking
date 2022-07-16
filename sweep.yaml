@@ -8,9 +8,9 @@ metric:
 
 parameters:
   operation:
-    values: ["x+y"]
+    value: "x/y"
   training_fraction:
-    values: [0.8, 0.9] # [0.5, 0.6, 0.7, 0.8, 0.9]
+    value: [0.5]
   num_layers:
     value: 2
   dim_model:
