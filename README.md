@@ -26,7 +26,7 @@ The project uses [Weights & Biases](https://wandb.ai/site) to keep track of expe
     python grokking/cli.py
     ```
 
-* To run a grid search W&B Sweeps:
+* To run a grid search using W&B Sweeps:
     ```bash
     wandb sweep sweep.yaml
     wandb agent {entity}/grokking/{sweep_id}
