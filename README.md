@@ -29,7 +29,7 @@ The project uses [Weights & Biases](https://wandb.ai/site) to keep track of expe
 * To run a grid search W&B Sweeps:
     ```bash
     wandb sweep sweep.yaml
-    wandb agent `{entity}/grokking/{sweep_id}
+    wandb agent {entity}/grokking/{sweep_id}
     ```
 
 ## References
