@@ -2,7 +2,7 @@ from math import ceil
 import torch
 
 DIVISION_MODULO_OPERATIONS = {
-    "x/y": lambda x, y, p: (x, y, x * y % p),
+    "x/y": lambda x, y, p: (x*y % p, y, x),
 }
 
 ALL_MODULO_OPERATIONS = {
