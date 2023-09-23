@@ -2,19 +2,13 @@ from math import ceil
 import torch
 
 DIVISION_MODULO_OPERATIONS = {
-    "x/y": lambda x, y, p: (x*y % p, y, x),
-    "(x//y)if(y%2==1)else(x-y)": lambda x, y, _: torch.where(y % 2 == 1, x // y, x - y)
+    "x/y": lambda x, y, p: (x, y, x * y % p),
 }
 
 ALL_MODULO_OPERATIONS = {
     "x+y": lambda x, y, _: (x, y, x + y),
     "x-y": lambda x, y, _: (x, y, x - y),
     **DIVISION_MODULO_OPERATIONS,
-    "x^2+y^2": lambda x, y, _: (x, y, x**2 + y**2),
-    "x^2+xy+y^2": lambda x, y, _: (x, y, x**2 + x*y + y**2),
-    "x^2+xy+y^2+x": lambda x, y, _: (x, y, x**2 + x*y + y**2 + x),
-    "x^3+xy": lambda x, y, _: (x, y, x**3 + x*y),
-    "x^3+xy^2+x": lambda x, y, _: (x, y, x**3 + x*y**2 + y)
 }
 
 ALL_OPERATIONS = {
@@ -33,11 +27,9 @@ def operation_mod_p_data(operation: str, p: int, eq_token: int, op_token: int):
     eq = torch.ones_like(x) * eq_token
     op = torch.ones_like(x) * op_token
 
-    x, y, z = ALL_OPERATIONS[operation](x, y, p)
-    results = z.remainder(p)
+    x, y, labels = ALL_OPERATIONS[operation](x, y, p)
 
     inputs = torch.stack([x, op, y, eq], dim=1)
-    labels = results
 
     return inputs, labels
 
