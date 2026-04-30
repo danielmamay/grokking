@@ -3,7 +3,7 @@ program: grokking/cli.py
 method: grid
 
 metric:
-  name: validation_loss
+  name: validation/loss
   goal: minimize
 
 parameters:
@@ -26,7 +26,7 @@ parameters:
   weight_decay:
     value: 1
   num_steps:
-    value: 1e5
+    value: 100000
   device:
-    value: cpu
+    value: gpu
   

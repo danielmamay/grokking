@@ -1,0 +1,16 @@
+[project]
+name = "grokking"
+version = "0.1.0"
+requires-python = ">=3.9"
+dependencies = [
+    "einops>=0.4.1",
+    "numpy>=1.23.1",
+    "torch>=1.12.0",
+    "tqdm>=4.64.0",
+    "wandb>=0.12.21",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.12",
+]
